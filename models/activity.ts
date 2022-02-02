@@ -1,4 +1,4 @@
-export default interface Event{
+export default interface Activity{
     id: string
     title: string
     desc: string

@@ -1,12 +1,13 @@
 import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
-import Event from "../models/event";
+import Activity from "../models/activity";
+import EventLineItem from "./event-line-item";
 
 
 
 
 export default function EventsPage() {
 
-    const events: Event[] = [
+    const events: Activity[] = [
         {id:"101",
         title: "dummy",
         desc: "not calling you a dummy though",
@@ -34,19 +35,7 @@ export default function EventsPage() {
             keyExtractor={item => item.id}
             data={events}
             renderItem={({item}) => (
-                <View>
-                    <Pressable>
-                        <Text>{item.title} {new Date(item.startTime).toDateString()}</Text>
-                    </Pressable>
-                    <View> 
-                        <Text>{item.desc}</Text>
-                        <Text>{item.endTime}</Text>
-                        <Text>{item.location}</Text>
-                        <Text>{item.status}</Text>
-                    </View>
-                   
-                    
-                </View>
+                <EventLineItem {...item}/>
             )}
         />
         
