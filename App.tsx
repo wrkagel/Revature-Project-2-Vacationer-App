@@ -5,19 +5,31 @@ import { StyleSheet, StatusBar } from "react-native";
 import EventsPage from "./components/events-page";
 import LoginPage from "./components/login-page";
 import ProblemsPage from "./components/problems-page";
+import ReservationDetailsPage from "./components/reservation-details-page";
+import Reservation from "./models/reservation";
 
 export default function App() {
   const [showLogin, setShowLogin] = useState(true);
+  const [reservation, setReservation] = useState<Reservation>({
+    id:"",
+    room:"",
+    checkIn:0,
+    checkOut:0,
+    owner:""
+  });
 
   const Tab = createBottomTabNavigator();
 
   return (
     <>
       {showLogin ? (
-        <LoginPage setShowLogin={setShowLogin} />
+        <LoginPage setShowLogin={setShowLogin} setReservation={setReservation} />
       ) : (
         <NavigationContainer>
           <Tab.Navigator>
+            <Tab.Screen name="Reservation" >
+              {(props) => <ReservationDetailsPage {...props} reservation={reservation} />}
+            </Tab.Screen>
             <Tab.Screen name="Events" component={EventsPage} />
             <Tab.Screen name="Report a Problem" component={ProblemsPage} />
           </Tab.Navigator>
