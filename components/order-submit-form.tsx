@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Animated, Pressable, Text, View } from "react-native";
-import { v4 } from "uuid";
+import { Animated, FlatList, Pressable, Text, View } from "react-native";
 import { ReservationContext } from "../App";
 import MenuItem from "../models/menu-item";
 
@@ -61,11 +60,29 @@ export default function OrderSubmitForm(props:{cart:{item:MenuItem, amount:numbe
             }
             props.setShowSubmit(false);
         })()
-    }, [submit])
+    }, [submit]);
+
+    function cancelSubmit(){
+        props.setShowSubmit(false);
+    };
 
     return(<Animated.View style={{position:"absolute", height:"100%", width:"100%", backgroundColor:"#aa77ff", transform: [{scale:formAnimation}]}}>
-        <Pressable onPress={() => setSubmit({...submit})}>
-            <Text>Submit</Text>
-        </Pressable>
+        <FlatList data={cart} keyExtractor={item => item.item.desc} renderItem={({item}) => {
+            return(<>
+            {Boolean(item.amount) && <View style={{flex:1, flexDirection:"row", margin:12, justifyContent:"space-between"}}>
+                <Text>{item.item.desc} </Text>
+                <Text>{item.item.cost} * {item.amount} = ${(item.item.cost * item.amount).toFixed(2)}</Text>
+            </View>}
+            </>)
+        }}/>
+        <Text>Total = ${cart.reduce((a, b) => a + b.item.cost * b.amount, 0).toFixed(2)}</Text>
+        <View style={{flex:1, flexDirection:"row", alignItems:"flex-end", justifyContent:"space-between", margin:12}}>
+            <Pressable onPress={() => setSubmit({...submit})}>
+                <Text>Submit</Text>
+            </Pressable>
+            <Pressable onPress={cancelSubmit}>
+                <Text>Cancel</Text>
+            </Pressable>
+        </View>
     </Animated.View>)
 }
