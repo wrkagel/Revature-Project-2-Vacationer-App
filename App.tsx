@@ -6,6 +6,7 @@ import EventsPage from "./components/events-page";
 import LoginPage from "./components/login-page";
 import ProblemsPage from "./components/problems-page";
 import ReservationDetailsPage from "./components/reservation-details-page";
+import RoomServicePage from "./components/room-service-page";
 import Reservation from "./models/reservation";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
               {(props) => <ReservationDetailsPage {...props} reservation={reservation} />}
             </Tab.Screen>
             <Tab.Screen name="Events" component={EventsPage} />
+            <Tab.Screen name="Room Service" component={RoomServicePage} />
             <Tab.Screen name="Report a Problem" component={ProblemsPage} />
           </Tab.Navigator>
         </NavigationContainer>
