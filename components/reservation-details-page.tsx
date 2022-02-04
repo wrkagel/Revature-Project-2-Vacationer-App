@@ -1,11 +1,13 @@
+import { useContext } from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { ReservationContext } from "../App";
 import Reservation from "../models/reservation";
 
 
-export default function ReservationDetailsPage(props:{reservation:Reservation}) {
+export default function ReservationDetailsPage() {
 
-    const {reservation} = props;
-
+    const reservation = useContext(ReservationContext);
+    
     return(<View style={styles.container}>
         <Text>Reservation for: {reservation.owner}</Text>
         <Text>Room: {reservation.room}</Text>

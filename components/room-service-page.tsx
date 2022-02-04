@@ -1,48 +1,39 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View, Pressable } from "react-native";
 import MenuItem from "../models/menu-item";
+import OrderSubmitForm from "./order-submit-form";
 
 
 export default function RoomServicePage() {
 
     const [cart, setCart] = useState<{item:MenuItem, amount:number}[]>([]);
     const [showCart, setShowCart] = useState<boolean>(false);
-    const [submit, setSubmit] = useState<{}>();
-
-    const menu:MenuItem[] = [
-        {
-            desc:"McLobster Bisque",
-            cost:40000.23
-        },
-        {
-            desc:"Grab Bag",
-            cost:2.2
-        },
-        {
-            desc:"This is the song that doesn't end",
-            cost:0
-        }
-    ]
+    const [showSubmit, setShowSubmit] = useState<boolean>(false);
+    const [menu, setMenu] = useState<MenuItem[]>([]);
 
     useEffect(() => {
-        const newCart = menu.map(item => {
-            return {item, amount:0};
-        });
-        setCart(newCart);
-        setShowCart(true);
+        (async () => {
+            const response = await axios.get<MenuItem[]>("http://20.72.189.253:3000/offerings")
+            .then(response => response)
+            .catch((error) => {
+                let message = "";
+                if(error instanceof Error) {
+                    message += error.message;
+                }
+                if(error.response) {
+                    message += '\n' + error.response.data;
+                }
+                alert(message);
+            });
+            if(response && response.status == 200) {
+                const newMenu:MenuItem[] = response.data;
+                setMenu(newMenu);
+                setCart(newMenu.map(item => ({item, amount:0})));
+                setShowCart(true);
+            }
+        })();
     }, []);
-
-    useEffect(() => {
-        if(!submit) return;
-        let message = "";
-        let total = 0;
-        cart.forEach((cartItem) => {
-            const totalAmount = cartItem.item.cost * cartItem.amount;
-            message += `${cartItem.item.desc}   ${cartItem.amount} x ${cartItem.item.cost} = ${totalAmount.toFixed(2)}\n`;
-            total += totalAmount;
-        })
-        alert(message + "\n" + `total = $${total.toFixed(2)}`);
-    }, [submit])
 
     function increaseAmount(item:MenuItem, index:number) {
         cart[index].amount++;
@@ -54,6 +45,21 @@ export default function RoomServicePage() {
             cart[index].amount--;
             setCart([...cart]);
         }
+    }
+
+    function checkOut() {
+        let allZero = true;
+        for(const cItem of cart) {
+            if(cItem.amount > 0) {
+                allZero = false;
+                break;
+            }
+        }
+        if(allZero) {
+            alert('You must order at least 1 item.');
+            return;
+        }
+        setShowSubmit(true)
     }
 
     return(<View style={{flex:1}}>
@@ -74,9 +80,10 @@ export default function RoomServicePage() {
             </View>
             </>)
         }} />
-        <Pressable style={{flex:0.1}} onPress={() => setSubmit({...submit})} >
+        <Pressable style={{flex:0.1}} onPress={() => checkOut()} >
             <Text style={styles.amountTextItem}>Check Out</Text>
         </Pressable>
+        {showSubmit && <OrderSubmitForm setShowSubmit={setShowSubmit} cart={cart}/>}
         </View>)
 }
 
