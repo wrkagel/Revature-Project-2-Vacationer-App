@@ -47,6 +47,21 @@ export default function RoomServicePage() {
         }
     }
 
+    function checkOut() {
+        let allZero = true;
+        for(const cItem of cart) {
+            if(cItem.amount > 0) {
+                allZero = false;
+                break;
+            }
+        }
+        if(allZero) {
+            alert('You must order at least 1 item.');
+            return;
+        }
+        setShowSubmit(true)
+    }
+
     return(<View style={{flex:1}}>
         <FlatList style={{flex:0.9}} keyExtractor={(item) => item.desc} data={menu} renderItem={({item, index}) => {
             return(<>
@@ -65,7 +80,7 @@ export default function RoomServicePage() {
             </View>
             </>)
         }} />
-        <Pressable style={{flex:0.1}} onPress={() => setShowSubmit(true)} >
+        <Pressable style={{flex:0.1}} onPress={() => checkOut()} >
             <Text style={styles.amountTextItem}>Check Out</Text>
         </Pressable>
         {showSubmit && <OrderSubmitForm setShowSubmit={setShowSubmit} cart={cart}/>}
