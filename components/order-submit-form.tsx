@@ -35,20 +35,18 @@ export default function OrderSubmitForm(props: {
   useEffect(() => {
     if (!submit) return;
     (async () => {
-      const order: { desc: string; amount: number }[] = [];
+      const requestedOfferings: { desc: string; amount: number }[] = [];
       cart.forEach((cItem) => {
         if (cItem.amount > 0) {
           const { desc } = cItem.item;
           const { amount } = cItem;
-          order.push({ desc, amount });
+          requestedOfferings.push({ desc, amount });
         }
       });
       const response = await axios
         .post<ServiceRequest>("http://20.72.189.253:3000/servicerequests", {
-          data: {
             room: reservation.room,
-            order,
-          },
+            requestedOfferings: requestedOfferings
         })
         .then((response) => response)
         .catch((error) => {

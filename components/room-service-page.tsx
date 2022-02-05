@@ -12,8 +12,7 @@ export default function RoomServicePage() {
   const [showSubmit, setShowSubmit] = useState<boolean>(false);
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
-  const [showServiceRequests, setShowServiceRequests] =
-    useState<boolean>(false);
+  const [showServiceRequests, setShowServiceRequests] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -106,21 +105,26 @@ export default function RoomServicePage() {
         }}
       />
 
-      <Pressable style={{ flex: 0.1 }}>
+      <Pressable style={{ flex: 0.1 }} onPress={() => setShowServiceRequests(true)}>
         <Text style={styles.amountTextItem}>Orders</Text>
       </Pressable>
-      {showServiceRequests && (
-        <ServiceRequestsList
-          setShowServiceRequests={showServiceRequests}
-          serviceRequests={serviceRequests}
-        />
-      )}
-
       <Pressable style={{ flex: 0.1 }} onPress={() => checkOut()}>
         <Text style={styles.amountTextItem}>Check Out</Text>
       </Pressable>
+      {showServiceRequests && (
+        <ServiceRequestsList
+          setShowServiceRequests={setShowServiceRequests}
+          serviceRequests={serviceRequests}
+          setServiceRequests={setServiceRequests}
+        />
+      )}
       {showSubmit && (
-        <OrderSubmitForm setShowSubmit={setShowSubmit} cart={cart} />
+        <OrderSubmitForm 
+          setShowSubmit={setShowSubmit} 
+          cart={cart} 
+          serviceRequests={serviceRequests} 
+          setServiceRequests={setServiceRequests}
+        />
       )}
     </View>
   );
