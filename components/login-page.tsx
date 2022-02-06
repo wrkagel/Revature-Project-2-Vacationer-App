@@ -44,8 +44,8 @@ export default function LoginPage(props: { setShowLogin: Function , setReservati
 
       if (response && response.status === 200) {
         props.setReservation(response.data);
-        props.setShowLogin(false);
         AsyncStorageLib.setItem("reservationId", response.data.id);
+        props.setShowLogin(false);
       }
     })();
   }, [submit]);
