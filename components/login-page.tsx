@@ -17,8 +17,14 @@ export default function LoginPage(props: { setShowLogin: Function , setReservati
   useEffect(() => {
     (async () => {
       const reservationId = await AsyncStorageLib.getItem("reservationId");
-      if (!reservationId && !submit) {
-        return;
+      if(!reservationId) {
+        if (!submit) {
+          return;
+        }
+        if(!inputId) {
+          alert('Please enter a reservation ID.');
+          return;
+        }
       }
       const response = await axios
         .get<Reservation>(
