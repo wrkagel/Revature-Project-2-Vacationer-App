@@ -1,24 +1,20 @@
+import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createContext, useContext, useState } from "react";
-import { StyleSheet, StatusBar } from "react-native";
+import { StyleSheet, StatusBar, Button } from "react-native";
 import EventsPage from "./components/events-page";
 import LoginPage from "./components/login-page";
 import ProblemsPage from "./components/problems-page";
 import ReservationDetailsPage from "./components/reservation-details-page";
 import RoomServicePage from "./components/room-service-page";
+import ReservationContext from "./contexts/reservation-context";
 import Reservation from "./models/reservation";
 
-export const ReservationContext = createContext({
-  id:"",
-  room:"",
-  checkIn:0,
-  checkOut:0,
-  owner:""
-});
+
 
 export default function App() {
-  const [showLogin, setShowLogin] = useState(true);
+  const [showLogin, setShowLogin] = useState<boolean>(true);
   const [reservation, setReservation] = useState<Reservation>({
     id:"",
     room:"",
@@ -35,7 +31,14 @@ export default function App() {
         <LoginPage setShowLogin={setShowLogin} setReservation={setReservation} />
       ) : (
         <NavigationContainer>
-          <Tab.Navigator>
+          <Tab.Navigator screenOptions={{
+            headerRight: () => {
+              return <Button title="Logout" onPress={async () => {
+                await AsyncStorageLib.removeItem("reservationId");
+                setShowLogin(true);
+              }} />
+            }
+          }}>
             <Tab.Screen name="Reservation" component={ReservationDetailsPage}/>
             <Tab.Screen name="Events" component={EventsPage} />
             <Tab.Screen name="Room Service" component={RoomServicePage} />

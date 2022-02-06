@@ -1,10 +1,10 @@
+import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Animated, FlatList, Pressable, Text, View } from "react-native";
-import { ReservationContext } from "../App";
+import ReservationContext from "../contexts/reservation-context";
 import MenuItem from "../models/menu-item";
 import ServiceRequest from "../models/service-request";
-import ServiceRequestsList from "./service-requests-list";
 
 export default function OrderSubmitForm(props: {
   cart: { item: MenuItem; amount: number }[];
@@ -62,6 +62,7 @@ export default function OrderSubmitForm(props: {
       if (response && response.status === 201) {
         props.serviceRequests.push(response.data);
         props.setServiceRequests([...props.serviceRequests]);
+        await AsyncStorageLib.setItem(reservation.id, JSON.stringify(props.serviceRequests));
         alert("Order successfully submitted");
       }
       props.setShowSubmit(false);

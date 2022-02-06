@@ -1,6 +1,8 @@
+import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View, Pressable } from "react-native";
+import ReservationContext from "../contexts/reservation-context";
 import MenuItem from "../models/menu-item";
 import ServiceRequest from "../models/service-request";
 import OrderSubmitForm from "./order-submit-form";
@@ -13,6 +15,7 @@ export default function RoomServicePage() {
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
   const [showServiceRequests, setShowServiceRequests] = useState<boolean>(false);
+  const reservation = useContext(ReservationContext);
 
   useEffect(() => {
     (async () => {
@@ -34,6 +37,10 @@ export default function RoomServicePage() {
         setMenu(newMenu);
         setCart(newMenu.map((item) => ({ item, amount: 0 })));
         setShowCart(true);
+      }
+      const storedRequests = await AsyncStorageLib.getItem(reservation.id);
+      if(storedRequests) {
+        setServiceRequests(JSON.parse(storedRequests));
       }
     })();
   }, []);

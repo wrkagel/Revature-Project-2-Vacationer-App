@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { ReservationContext } from "../App";
+import ReservationContext from "../contexts/reservation-context";
 
 
 export default function ReservationDetailsPage() {
