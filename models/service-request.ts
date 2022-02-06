@@ -5,5 +5,5 @@ export default interface ServiceRequest {
     room: string;
     created: number;
     status: "Ordered" | "Processing" | "Completed" | "Cancelled";
-    order: {desc:string, amount:number}[];
+    requestedOfferings: {desc:string, amount:number}[];
 } 
