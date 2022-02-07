@@ -1,7 +1,10 @@
 import { StyleSheet, View, Text, TextInput, Pressable, Button, Image } from "react-native";
 import {Picker} from '@react-native-picker/picker'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
+import axios from "axios";
+import axiosErrorHandler from "../error-handlers/axios-error-handler";
+import ProblemRoutes from "../routes/problem-routes";
 
 
 export default function ProblemsPage() {
@@ -9,6 +12,10 @@ export default function ProblemsPage() {
     const [type, setType] = useState<string>("");
 
     const [image, setImage] = useState<string | null>(null);
+
+    const [desc, setDesc] = useState<string>("");
+
+    const [submit, setSubmit] = useState<{}>()
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -25,6 +32,20 @@ export default function ProblemsPage() {
           setImage(result.uri);
         }
       };
+
+      useEffect(()=> {
+        if(!submit)return;
+        (async () => {
+            const savedDesc = {category:type,desc}
+            const response = await ProblemRoutes.postProblem(savedDesc);
+            if(response){
+                alert(response.data)
+            }else{
+                alert("error occured while contacting server")
+            }
+        })();
+
+        },[submit])
 
     return (<View style={styles.container}>
         <View style={{flex:0.2, flexDirection:'row'}}>
@@ -46,12 +67,13 @@ export default function ProblemsPage() {
             </View>
         </View>
         <View style={{flex:0.5}}>
-            <TextInput style={{fontSize:20}} multiline={true} placeholder="Write a description of the problem here"/>
+            <TextInput onChangeText={(value)=> setDesc(value)} style={{fontSize:20, flex:1}} multiline 
+            placeholder={"Write a description of the problem here and please include location/room number"}/>
         </View>
         <View style={{flex:0.2}}>
             <Button title="Add a Photo" onPress={pickImage} />
         </View>
-        <Pressable style={{flex:0.1}}>
+        <Pressable onPress={()=>setSubmit({...submit})} style={{flex:0.1}}>
             <Text style={styles.pickerItem}>Submit Problem</Text>
         </Pressable>
         {image && <Image source={{ uri: image }} style={{width:200, height: 200 }} />}
