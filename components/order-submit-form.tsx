@@ -1,10 +1,10 @@
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Animated, FlatList, Pressable, Text, View } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
 import MenuItem from "../models/menu-item";
 import ServiceRequest from "../models/service-request";
+import ServiceRequestRoutes from "../routes/service-request-routes";
 
 export default function OrderSubmitForm(props: {
   cart: { item: MenuItem; amount: number }[];
@@ -43,22 +43,7 @@ export default function OrderSubmitForm(props: {
           requestedOfferings.push({ desc, amount });
         }
       });
-      const response = await axios
-        .post<ServiceRequest>("http://20.72.189.253:3000/servicerequests", {
-            room: reservation.room,
-            requestedOfferings: requestedOfferings
-        })
-        .then((response) => response)
-        .catch((error) => {
-          let message = "";
-          if (error instanceof Error) {
-            message += error.message;
-          }
-          if (error.response) {
-            message += error.response.data;
-          }
-          alert(message);
-        });
+      const response = await ServiceRequestRoutes.submitServiceRequest(requestedOfferings, reservation.room);
       if (response && response.status === 201) {
         props.serviceRequests.push(response.data);
         props.setServiceRequests([...props.serviceRequests]);

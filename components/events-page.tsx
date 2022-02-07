@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import Activity from "../models/activity";
+import ServiceRequestRoutes from "../routes/service-request-routes";
 import EventLineItem from "./event-line-item";
 
 
@@ -13,18 +13,7 @@ export default function EventsPage() {
 
     useEffect(() => {
         (async () => {
-            const response = await axios.get<Activity[]>(`http://20.72.189.253:3000/activities`)
-            .then(response => response)
-            .catch((error) => {
-                let message = "";
-                if(error instanceof Error) {
-                    message += error.message;
-                }
-                if(error.response) {
-                    message += "\n" + error.response.data;
-                }
-                alert(message);
-            });
+            const response = await ServiceRequestRoutes.getEvents();
             if(response && response.status === 200) {
                 setEvents(response.data);
             }
