@@ -1,4 +1,3 @@
-import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Animated, FlatList, Pressable, Text, View } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
@@ -47,7 +46,6 @@ export default function OrderSubmitForm(props: {
       if (response && response.status === 201) {
         props.serviceRequests.push(response.data);
         props.setServiceRequests([...props.serviceRequests]);
-        await AsyncStorageLib.setItem(reservation.id, JSON.stringify(props.serviceRequests));
         alert("Order successfully submitted");
       }
       props.setShowSubmit(false);

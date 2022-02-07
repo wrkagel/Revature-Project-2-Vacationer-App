@@ -1,4 +1,3 @@
-import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View, Pressable } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
@@ -26,9 +25,9 @@ export default function RoomServicePage() {
         setCart(newMenu.map((item) => ({ item, amount: 0 })));
         setShowCart(true);
       }
-      const storedRequests = await AsyncStorageLib.getItem(reservation.id);
-      if(storedRequests) {
-        setServiceRequests(JSON.parse(storedRequests));
+      const storedRequestsResponse = await ServiceRequestRoutes.getServiceRequestsByRoom(reservation.room);
+      if(storedRequestsResponse && storedRequestsResponse.status === 200) {
+        setServiceRequests(storedRequestsResponse.data);
       }
     })();
   }, []);
