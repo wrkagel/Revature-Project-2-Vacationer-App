@@ -1,4 +1,3 @@
-import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { useContext, useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
@@ -29,7 +28,6 @@ export default function RequestListItem(props: {
                     }
                 }
                 setServiceRequests([...serviceRequests]);
-                await AsyncStorageLib.setItem(reservation.id, JSON.stringify(serviceRequests));
             }
         })();
     },[]);
@@ -43,7 +41,6 @@ export default function RequestListItem(props: {
                 const index = serviceRequests.findIndex((r) => r.id === request.id);
                 serviceRequests.splice(index, 1);
                 setServiceRequests([...serviceRequests]);
-                await AsyncStorageLib.setItem(reservation.id, JSON.stringify(serviceRequests));
             }
         })();
     }, [cancel])

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import Activity from "../models/activity";
-import ServiceRequestRoutes from "../routes/service-request-routes";
+import EventRoutes from "../routes/event-routes";
 import EventLineItem from "./event-line-item";
 
 
@@ -13,7 +13,7 @@ export default function EventsPage() {
 
     useEffect(() => {
         (async () => {
-            const response = await ServiceRequestRoutes.getEvents();
+            const response = await EventRoutes.getEvents();
             if(response && response.status === 200) {
                 setEvents(response.data);
             }
