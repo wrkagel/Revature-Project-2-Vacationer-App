@@ -1,10 +1,10 @@
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View, Pressable } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
 import MenuItem from "../models/menu-item";
 import ServiceRequest from "../models/service-request";
+import ServiceRequestRoutes from "../routes/service-request-routes";
 import OrderSubmitForm from "./order-submit-form";
 import ServiceRequestsList from "./service-requests-list";
 
@@ -19,19 +19,7 @@ export default function RoomServicePage() {
 
   useEffect(() => {
     (async () => {
-      const response = await axios
-        .get<MenuItem[]>("http://20.72.189.253:3000/offerings")
-        .then((response) => response)
-        .catch((error) => {
-          let message = "";
-          if (error instanceof Error) {
-            message += error.message;
-          }
-          if (error.response) {
-            message += "\n" + error.response.data;
-          }
-          alert(message);
-        });
+      const response = await ServiceRequestRoutes.getOfferings();
       if (response && response.status == 200) {
         const newMenu: MenuItem[] = response.data;
         setMenu(newMenu);
@@ -70,9 +58,6 @@ export default function RoomServicePage() {
       return;
     }
     setShowSubmit(true);
-  }
-  function orders() {
-    setShowServiceRequests(true);
   }
 
   return (

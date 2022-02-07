@@ -1,5 +1,4 @@
 import AsyncStorageLib from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -8,7 +7,7 @@ import {
   TextInput,
   Pressable
 } from "react-native";
-import Reservation from "../models/reservation";
+import ReservationRoutes from "../routes/reservation-routes";
 
 export default function LoginPage(props: { setShowLogin: Function , setReservation: Function }) {
   const [inputId, setInputId] = useState("");
@@ -26,22 +25,7 @@ export default function LoginPage(props: { setShowLogin: Function , setReservati
           return;
         }
       }
-      const response = await axios
-        .get<Reservation>(
-          `https://f165bdd7-5455-4849-8cd5-9572a4c22c52.mock.pstmn.io/reservations/${reservationId ?? inputId}`
-        )
-        .then((r) => r)
-        .catch((error) => {
-          let message = "";
-          if(error.response) {
-            message += error.response.data;
-          }
-          if(error.message) {
-            message += `\n${error.message}`;
-          }
-          alert(message);
-        });
-
+      const response = await ReservationRoutes.login(reservationId ?? inputId);
       if (response && response.status === 200) {
         props.setReservation(response.data);
         AsyncStorageLib.setItem("reservationId", response.data.id);
