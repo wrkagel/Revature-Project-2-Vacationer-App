@@ -16,6 +16,10 @@ export default function RoomServicePage() {
   const [showServiceRequests, setShowServiceRequests] = useState<boolean>(false);
   const reservation = useContext(ReservationContext);
 
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [run, setRun] = useState<{}>();
+  
+
   useEffect(() => {
     (async () => {
       const response = await ServiceRequestRoutes.getOfferings();
@@ -30,7 +34,8 @@ export default function RoomServicePage() {
         setServiceRequests(storedRequestsResponse.data);
       }
     })();
-  }, []);
+    setRefreshing(false);
+  }, [run]);
 
   function increaseAmount(item: MenuItem, index: number) {
     cart[index].amount++;
@@ -59,12 +64,20 @@ export default function RoomServicePage() {
     setShowSubmit(true);
   }
 
+  function refresh(){
+    setRefreshing(true)
+    setRun({...run})
+    alert("page refreshed")
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <FlatList
         style={{ flex: 0.8 }}
         keyExtractor={(item) => item.desc}
         data={menu}
+        refreshing={refreshing}
+        onRefresh={refresh}
         renderItem={({ item, index }) => {
           return (
             <>
@@ -107,6 +120,8 @@ export default function RoomServicePage() {
           setShowServiceRequests={setShowServiceRequests}
           serviceRequests={serviceRequests}
           setServiceRequests={setServiceRequests}
+          refresh={refresh}
+          refreshing={refreshing}
         />
       )}
       {showSubmit && (

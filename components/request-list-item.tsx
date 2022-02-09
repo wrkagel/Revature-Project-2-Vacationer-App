@@ -46,7 +46,7 @@ export default function RequestListItem(props: {
     }, [cancel])
 
     return (<View style={{flex:1, flexDirection:"row", justifyContent:"space-between"}}>
-        <Text>{request.requestedOfferings.reduce((a, b) => a + b.desc + ' * ' + b.amount + "\n", "")}status: {request.status}</Text>
+        <Text>{request.requestedOfferings.reduce((a, b) => a + b.desc + ' x ' + b.amount + "\n", "")} status: {request.status} {"\n"}</Text>
         <Button title="Cancel Order" onPress={() => setCancel({...cancel})} />
     </View>)
 }
