@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
 import ServiceRequest from "../models/service-request";
 import ServiceRequestRoutes from "../routes/service-request-routes";
@@ -46,7 +46,28 @@ export default function RequestListItem(props: {
     }, [cancel])
 
     return (<View style={{flex:1, flexDirection:"row", justifyContent:"space-between"}}>
-        <Text>{request.requestedOfferings.reduce((a, b) => a + b.desc + ' x ' + b.amount + "\n", "")} status: {request.status} {"\n"}</Text>
-        <Button title="Cancel Order" onPress={() => setCancel({...cancel})} />
+        <Text style={styles.listItem} >{request.requestedOfferings.reduce((a, b) => a + b.desc + ' x ' + b.amount + "\n", "")} status: {request.status} {"\n"}</Text>
+        <Pressable style={styles.submitButton} onPress={() => setCancel({...cancel})}>
+            <Text style={styles.submitText} >Cancel Order</Text>
+        </Pressable>
     </View>)
 }
+
+const styles = StyleSheet.create({
+    listItem:{
+        fontWeight:"bold",
+        fontSize:16,
+    },
+    submitButton:{
+        backgroundColor:"#ff7799",
+        maxHeight:40,
+        padding:3,
+        margin:8,
+    },
+    submitText:{
+        fontSize:16,
+        fontWeight:"bold",
+        textAlign:"center",
+        padding:3,
+    },
+})

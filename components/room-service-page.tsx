@@ -67,7 +67,6 @@ export default function RoomServicePage() {
   function refresh(){
     setRefreshing(true)
     setRun({...run})
-    alert("page refreshed")
   }
 
   return (

@@ -17,7 +17,7 @@ export default function ServiceRequestsList(props: {
       position: "absolute",
       height: "100%",
       width: "100%",
-      backgroundColor: "#aa77ff"
+      backgroundColor: "#efefef"
     }}>
       <FlatList 
       data={props.serviceRequests} 
