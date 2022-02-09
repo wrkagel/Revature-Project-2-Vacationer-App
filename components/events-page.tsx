@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text, Pressable } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import Activity from "../models/activity";
 import EventRoutes from "../routes/event-routes";
 import EventLineItem from "./event-line-item";

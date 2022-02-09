@@ -12,11 +12,12 @@ export default function EventLineItem(props: Activity){
     return(
     <View>
         <Pressable onPress={()=> setExpanded(!expanded)} style={{flex:1}}>
-            <Text>{props.title} {new Date(props.startTime).toDateString()}</Text>
+            <Text style={{fontSize:20}}>{props.title}</Text>
+            <Text style={{fontSize:20}}>{new Date(props.startTime).toLocaleString()}</Text>
         </Pressable>
         {expanded && <View>
             <Text>{props.desc}</Text>
-            <Text>{props.endTime}</Text>
+            <Text>{new Date(props.endTime).toLocaleString()}</Text>
             <Text>{props.location}</Text>
             <Text>{props.status}</Text>
         </View>}
