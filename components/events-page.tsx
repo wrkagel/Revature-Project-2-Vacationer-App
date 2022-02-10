@@ -10,6 +10,8 @@ import EventLineItem from "./event-line-item";
 export default function EventsPage() {
 
     const [events, setEvents] =  useState<Activity[]>([]);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
+    const [run, setRun] = useState<{}>();
 
     useEffect(() => {
         (async () => {
@@ -18,7 +20,13 @@ export default function EventsPage() {
                 setEvents(response.data);
             }
         })();
-    },[]);
+        setRefreshing(false);
+    },[run]);
+
+    function refresh(){
+        setRefreshing(true);
+        setRun({...run});
+    }
 
 
     return(<View style={styles.container}>
@@ -26,6 +34,8 @@ export default function EventsPage() {
         <FlatList 
             keyExtractor={item => item.id}
             data={events}
+            refreshing = {refreshing}
+            onRefresh={refresh}
             renderItem={({item}) => (
                 <EventLineItem {...item}/>
             )}

@@ -2,8 +2,6 @@ import { StyleSheet, View, Text, TextInput, Pressable, Button, Image } from "rea
 import {Picker} from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
-import axios from "axios";
-import axiosErrorHandler from "../error-handlers/axios-error-handler";
 import ProblemRoutes from "../routes/problem-routes";
 
 
