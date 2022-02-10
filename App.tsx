@@ -2,7 +2,7 @@ import AsyncStorageLib from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { useState } from "react";
-import { StyleSheet, StatusBar, Button } from "react-native";
+import { StyleSheet, StatusBar, Button, View } from "react-native";
 import EventsPage from "./components/events-page";
 import LoginPage from "./components/login-page";
 import ProblemsPage from "./components/problems-page";
@@ -33,10 +33,12 @@ export default function App() {
         <NavigationContainer>
           <Tab.Navigator screenOptions={{
             headerRight: () => {
-              return <Button title="Logout" onPress={async () => {
+              return (<View style={styles.logoutButton}>
+                <Button title="Logout" onPress={async () => {
                 await AsyncStorageLib.clear();
                 setShowLogin(true);
               }} />
+              </View>)
             }
           }}>
             <Tab.Screen name="Reservation" component={ReservationDetailsPage}/>
@@ -58,5 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#dedede",
     alignItems: "center",
     justifyContent: "center",
+  },
+  logoutButton:{
+    marginRight:10,
   },
 });

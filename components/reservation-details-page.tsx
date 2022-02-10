@@ -8,16 +8,41 @@ export default function ReservationDetailsPage() {
     const reservation = useContext(ReservationContext);
     
     return(<View style={styles.container}>
-        <Text>Reservation for: {reservation.owner}</Text>
-        <Text>Room: {reservation.room}</Text>
-        <Text>Check In Date: {new Date(reservation.checkIn).toDateString()}</Text>
-        <Text>Check Out Date: {new Date(reservation.checkOut).toDateString()}</Text>
-        <Text>Reservation ID: {reservation.id}</Text>
+        <Text style={styles.detailsText}>
+            <Text style={styles.rowHead}>Reservation for: </Text>
+            {reservation.owner}
+        </Text>
+        <Text style={styles.detailsText}>
+            <Text style={styles.rowHead}>Room: </Text>
+            {reservation.room}
+        </Text>
+        <Text style={styles.detailsText}>
+            <Text style={styles.rowHead}>Check In Date: </Text>
+            {new Date(reservation.checkIn).toDateString()}
+        </Text>
+        <Text style={styles.detailsText}>
+            <Text style={styles.rowHead}>Check Out Date: </Text> 
+            {new Date(reservation.checkOut).toDateString()}
+        </Text>
+        <Text style={styles.detailsText}>
+            <Text style={styles.rowHead}>Reservation ID: </Text>
+            {reservation.id}
+        </Text>
     </View>)
 }
 
 const styles = StyleSheet.create({
     container: {
-
+        flex:1,
+        justifyContent:"center",
+        marginLeft:"10%",
+    },
+    rowHead:{
+        fontWeight:"bold",
+        fontSize:16,
+        marginLeft:"10%"
+    },
+    detailsText:{ 
+        fontSize:18,        
     }
 });

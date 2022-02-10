@@ -81,8 +81,8 @@ export default function RoomServicePage() {
           return (
             <>
               <View style={styles.menuItem}>
-                <Text>{item.desc}</Text>
-                <Text>${item.cost.toFixed(2)}</Text>
+                <Text style={styles.menuItemText}>{item.desc}</Text>
+                <Text style={styles.menuItemText}>${item.cost.toFixed(2)}</Text>
               </View>
               <View style={[styles.menuItem, styles.amountContainer]}>
                 <Pressable
@@ -140,14 +140,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
+    padding:10,
+  },
+  menuItemText: {
+    fontSize: 18,
+    fontWeight:"bold",
   },
   amountContainer: {
     justifyContent: undefined,
   },
   amountItem: {
     flex: 1,
-    backgroundColor: "#0055f5",
+    backgroundColor: "#0055f5aa",
     borderStyle: "solid",
     borderWidth: 2,
     alignSelf: "center",
