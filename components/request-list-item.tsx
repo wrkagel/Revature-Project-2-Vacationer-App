@@ -45,29 +45,36 @@ export default function RequestListItem(props: {
         })();
     }, [cancel])
 
-    return (<View style={{flex:1, flexDirection:"row", justifyContent:"space-between"}}>
-        <Text style={styles.listItem} >{request.requestedOfferings.reduce((a, b) => a + b.desc + ' x ' + b.amount + "\n", "")} status: {request.status} {"\n"}</Text>
-        <Pressable style={styles.submitButton} onPress={() => setCancel({...cancel})}>
-            <Text style={styles.submitText} >Cancel Order</Text>
+    return (<View style={styles.listItemView}>
+        <Text style={styles.listItemText} >{request.requestedOfferings.reduce((a, b) => a + b.desc + ' x ' + b.amount + "\n", "")}Status: {request.status} {"\n"}</Text>
+        <Pressable style={styles.cancelButton} onPress={() => setCancel({...cancel})}>
+            <Text style={styles.cancelText} >Cancel Order</Text>
         </Pressable>
     </View>)
 }
 
 const styles = StyleSheet.create({
-    listItem:{
+    listItemView:{
+        flex:1, 
+        flexDirection:"row", 
+        justifyContent:"space-between",
+        marginHorizontal: 12,
+        marginTop:12,
+    },
+    listItemText:{
         fontWeight:"bold",
         fontSize:16,
     },
-    submitButton:{
-        backgroundColor:"#ff7799",
+    cancelButton:{
+        backgroundColor:"rgba(215,0,0,0.7)",
         maxHeight:40,
         padding:3,
         margin:8,
     },
-    submitText:{
+    cancelText:{
         fontSize:16,
         fontWeight:"bold",
         textAlign:"center",
-        padding:3,
+        padding:5,
     },
 })

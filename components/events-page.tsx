@@ -47,10 +47,7 @@ export default function EventsPage() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#dedede'
+        backgroundColor: '#efefef',
+        marginHorizontal:8,
     },
-    itemContainer: {
-        flex:1,
-        flexDirection: "column",
-    }
 })

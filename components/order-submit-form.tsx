@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Animated, FlatList, Pressable, Text, View } from "react-native";
+import { Animated, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
 import MenuItem from "../models/menu-item";
 import ServiceRequest from "../models/service-request";
@@ -62,7 +62,7 @@ export default function OrderSubmitForm(props: {
         position: "absolute",
         height: "100%",
         width: "100%",
-        backgroundColor: "#aa77ff",
+        backgroundColor: "#efefef",
         transform: [{ scale: formAnimation }],
       }}
     >
@@ -74,16 +74,11 @@ export default function OrderSubmitForm(props: {
             <>
               {Boolean(item.amount) && (
                 <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    margin: 12,
-                    justifyContent: "space-between",
-                  }}
+                  style={styles.orderDetailsView}
                 >
-                  <Text>{item.item.desc} </Text>
-                  <Text>
-                    {item.item.cost} * {item.amount} = $
+                  <Text style={styles.orderDetailsText}>{item.item.desc} </Text>
+                  <Text style={styles.orderDetailsText}>
+                    {item.item.cost.toFixed(2)} x {item.amount} = $
                     {(item.item.cost * item.amount).toFixed(2)}
                   </Text>
                 </View>
@@ -92,26 +87,60 @@ export default function OrderSubmitForm(props: {
           );
         }}
       />
-      <Text>
+      <Text style={styles.totalText}>
         Total = $
         {cart.reduce((a, b) => a + b.item.cost * b.amount, 0).toFixed(2)}
       </Text>
       <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          margin: 12,
-        }}
+        style={styles.buttonView}
       >
-        <Pressable onPress={() => setSubmit({ ...submit })}>
-          <Text>Submit</Text>
+        <Pressable style={styles.cancelButton} onPress={cancelSubmit}>
+          <Text style={styles.buttonText}>Cancel</Text>
         </Pressable>
-        <Pressable onPress={cancelSubmit}>
-          <Text>Cancel</Text>
+        <Pressable style={styles.submitButton} onPress={() => setSubmit({ ...submit })}>
+          <Text style={styles.buttonText}>Place Order</Text>
         </Pressable>
       </View>
     </Animated.View>
   );
 }
+
+const styles = StyleSheet.create({
+  orderDetailsView:{
+    flex: 1,
+    flexDirection: "row",
+    margin: 12,
+    justifyContent: "space-between", 
+  },
+  orderDetailsText:{
+    fontSize:18,
+    fontWeight:"700"
+  },
+  totalText:{
+    fontSize:24,
+    color: "#448844",
+    fontWeight:"bold",
+    textAlign:"center",
+  },
+  submitButton:{
+    backgroundColor:"#99c966",
+  },
+  cancelButton:{
+    backgroundColor:"rgba(215,0,0,0.7)"
+  },
+  buttonView:{
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    margin: 12,
+    marginBottom:25,
+  },
+  buttonText:{
+    textAlign:"center",
+    textAlignVertical:"auto",
+    fontWeight:"bold",
+    fontSize:16,
+    padding:10,
+  },
+});

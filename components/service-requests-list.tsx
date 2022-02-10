@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import ServiceRequest from "../models/service-request";
 import RequestListItem from "./request-list-item";
 
@@ -13,12 +13,7 @@ export default function ServiceRequestsList(props: {
 
 
   return (
-    <View style={{
-      position: "absolute",
-      height: "100%",
-      width: "100%",
-      backgroundColor: "#efefef"
-    }}>
+    <View style={styles.page}>
       <FlatList 
       data={props.serviceRequests} 
       keyExtractor={(item)=> item.id}
@@ -32,8 +27,24 @@ export default function ServiceRequestsList(props: {
         />
       )}}/>      
       <Pressable onPress={()=>props.setShowServiceRequests(false)}>
-          <Text>Close</Text>
+          <Text style={styles.closeText}>Close</Text>
       </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  page:{
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#efefef"
+  },
+  closeText:{
+    fontSize: 30,
+    fontWeight:"bold",
+    textAlign:"center",
+    padding:10,
+    backgroundColor:"rgba(210,0,0,.6)"
+  },
+})
