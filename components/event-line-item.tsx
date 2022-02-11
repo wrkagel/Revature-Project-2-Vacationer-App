@@ -40,9 +40,8 @@ export default function EventLineItem(props: Activity){
             <Text style={styles.inlineTextBold}>{props.title}</Text>
             <Text style={styles.inlineText}>{new Date(props.startTime).toLocaleString()}</Text>
         </Pressable>
-        <Animated.View style={{transform: [{ scaleY: formAnimation }]}}>
             {expanded && 
-                <View>
+                <Animated.View style={{transform: [{ scaleY: formAnimation }]}}>
                     <Text style={styles.expandedText}>
                         <Text style={styles.expandedBold}>Event Details: </Text>
                         {props.desc}
@@ -59,9 +58,8 @@ export default function EventLineItem(props: Activity){
                         <Text style={styles.expandedBold}>Event Status: </Text>
                         {props.status}
                     </Text>
-                </View>
+                </Animated.View>
             }
-        </Animated.View>
     </View>)
 }
 
