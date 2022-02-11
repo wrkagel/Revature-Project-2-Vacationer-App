@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Pressable
+  Pressable,
+  Image
 } from "react-native";
 import ReservationRoutes from "../routes/reservation-routes";
 
@@ -37,8 +38,10 @@ export default function LoginPage(props: { setShowLogin: Function , setReservati
   return (<View style={{flex:1}}>
     <View style={styles.headerView}>
       <Text style={styles.welcomeText}>Welcome to the Triple Threat Guest Experiences App</Text>
+      
     </View>
     <View style={styles.containerStyle}>
+      <Image style={{width:200,height:200}} source={require("../assets/triple-threat-logo.png")}/>
       <Text style={styles.headerStyle}>Please enter your reservation ID</Text>
       <TextInput
         style={styles.inputStyle}
