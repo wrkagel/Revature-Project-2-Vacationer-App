@@ -6,6 +6,7 @@ import ServiceRequest from "../models/service-request";
 import ServiceRequestRoutes from "../routes/service-request-routes";
 import OrderSubmitForm from "./order-submit-form";
 import ServiceRequestsList from "./service-requests-list";
+import { Fontisto, Feather, AntDesign } from '@expo/vector-icons';
 
 export default function RoomServicePage() {
   const [cart, setCart] = useState<{ item: MenuItem; amount: number }[]>([]);
@@ -109,10 +110,10 @@ export default function RoomServicePage() {
       />
 
       <Pressable style={{ flex: 0.1 }} onPress={() => setShowServiceRequests(true)}>
-        <Text style={styles.amountTextItem}>Orders</Text>
+        <Text style={styles.amountTextItem}>Orders  <Feather name="list" size={24} color="black" /></Text>
       </Pressable>
       <Pressable style={{ flex: 0.1 }} onPress={() => checkOut()}>
-        <Text style={styles.amountTextItem}>Check Out</Text>
+        <Text style={styles.amountTextItem}>Check Out  <AntDesign name="shoppingcart" size={24} color="black" /></Text>
       </Pressable>
       {showServiceRequests && (
         <ServiceRequestsList
