@@ -19,16 +19,16 @@ export default function OrderSubmitForm(props: {
 
   const { cart } = props;
 
-  function slideUp() {
+  function openFromCenter() {
     Animated.timing(formAnimation, {
       toValue: 1,
       duration: 500,
-      useNativeDriver: false,
+      useNativeDriver: true
     }).start();
   }
 
   useEffect(() => {
-    slideUp();
+    openFromCenter();
   }, []);
 
   useEffect(() => {
