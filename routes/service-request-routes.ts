@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 import axiosErrorHandler from "../error-handlers/axios-error-handler";
-import Activity from "../models/activity";
 import MenuItem from "../models/menu-item";
 import ServiceRequest from "../models/service-request";
 

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import {View, Pressable, Text, StyleSheet} from "react-native";
+import { useRef, useState } from "react";
+import {View, Pressable, Text, StyleSheet, Animated} from "react-native";
 import Activity from "../models/activity";
 
 
@@ -8,31 +8,60 @@ export default function EventLineItem(props: Activity){
 
     const [expanded, setExpanded] = useState<boolean>(false)
 
+    const formAnimation = useRef(new Animated.Value(0)).current;
 
-    return(
-    <View>
-        <Pressable onPress={()=> setExpanded(!expanded)} style={styles.pressable}>
+    function expand() {
+        Animated.timing(formAnimation, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true
+        }).start();
+    }
+
+    function contract() {
+        Animated.timing(formAnimation, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver:true
+        }).start(() => {
+            setExpanded(false);
+        })
+    }
+
+    return(<View>
+        <Pressable onPress={()=> {
+                if(!expanded) {
+                    setExpanded(true);
+                    expand();
+                } else {
+                    contract();
+                }
+            }} style={styles.pressable}>
             <Text style={styles.inlineTextBold}>{props.title}</Text>
             <Text style={styles.inlineText}>{new Date(props.startTime).toLocaleString()}</Text>
         </Pressable>
-        {expanded && <View>
-            <Text style={styles.expandedText}>
-                <Text style={styles.expandedBold}>Event Details: </Text>
-                {props.desc}
-            </Text>
-            <Text style={styles.expandedText}>
-                <Text style={styles.expandedBold}>End Time: </Text>
-                {new Date(props.endTime).toLocaleString()}
-            </Text>
-            <Text style={styles.expandedText}>
-                <Text style={styles.expandedBold}>Where: </Text>
-                {props.location}
-            </Text>
-            <Text style={styles.expandedText}>
-                <Text style={styles.expandedBold}>Event Status: </Text>
-                {props.status}
-            </Text>
-        </View>}
+        <Animated.View style={{transform: [{ scaleY: formAnimation }]}}>
+            {expanded && 
+                <View>
+                    <Text style={styles.expandedText}>
+                        <Text style={styles.expandedBold}>Event Details: </Text>
+                        {props.desc}
+                    </Text>
+                    <Text style={styles.expandedText}>
+                        <Text style={styles.expandedBold}>End Time: </Text>
+                        {new Date(props.endTime).toLocaleString()}
+                    </Text>
+                    <Text style={styles.expandedText}>
+                        <Text style={styles.expandedBold}>Where: </Text>
+                        {props.location}
+                    </Text>
+                    <Text style={styles.expandedText}>
+                        <Text style={styles.expandedBold}>Event Status: </Text>
+                        {props.status}
+                    </Text>
+                </View>
+            }
+        </Animated.View>
     </View>)
 }
 
