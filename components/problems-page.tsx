@@ -48,7 +48,7 @@ export default function ProblemsPage() {
     return (<View style={styles.container}>
         <View style={{flex:0.2, flexDirection:'row'}}>
             <View style={{flex:1}}>
-                <Text style={{flex: 1, textAlignVertical:"center", textAlign:"center", fontSize:20, padding:10, backgroundColor:"#fff"}}>
+                <Text style={styles.issueLabel}>
                     Choose Issue Type
                 </Text>
             </View>
@@ -65,14 +65,14 @@ export default function ProblemsPage() {
             </View>
         </View>
         <View style={{flex:0.5}}>
-            <TextInput onChangeText={(value)=> setDesc(value)} style={{fontSize:20, flex:1}} multiline 
+            <TextInput onChangeText={(value)=> setDesc(value)} style={styles.textInput} multiline 
             placeholder={"Write a description of the problem here and please include location/room number"}/>
         </View>
-        <View style={{flex:0.2}}>
+        <View style={styles.addPhotoView}>
             <Button title="Add a Photo" onPress={pickImage} />
         </View>
-        <Pressable onPress={()=>setSubmit({...submit})} style={{flex:0.1}}>
-            <Text style={styles.pickerItem}>Submit Problem</Text>
+        <Pressable onPress={()=>setSubmit({...submit})} style={styles.pressable}>
+            <Text style={styles.pressableText}>Submit Problem</Text>
         </Pressable>
         {image && <Image source={{ uri: image }} style={{width:200, height: 200 }} />}
     </View>)
@@ -87,5 +87,34 @@ const styles = StyleSheet.create({
         fontSize:20,
         textAlign:"center",
         textAlignVertical:"center"
+    },
+    pressableText:{
+        textAlign:"center",
+        fontSize:24,
+        fontWeight:"bold",
+    },
+    pressable:{
+        flex:0.1,
+        backgroundColor:"#e0a020",
+        justifyContent:"center"
+    },
+    issueLabel:{
+        flex: 1, 
+        textAlignVertical:"center",
+        textAlign:"center", 
+        fontSize:20, 
+        padding:10, 
+        backgroundColor:"#fff"
+    },
+    textInput:{
+        flex:1,
+        fontSize:20,
+        padding:15,
+    },
+    addPhotoView:{
+        flex:0.2,
+        justifyContent:"flex-start",
+        marginHorizontal: "20%",
     }
+
 })

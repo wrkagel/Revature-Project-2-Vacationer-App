@@ -10,7 +10,7 @@ import ReservationDetailsPage from "./components/reservation-details-page";
 import RoomServicePage from "./components/room-service-page";
 import ReservationContext from "./contexts/reservation-context";
 import Reservation from "./models/reservation";
-import { SimpleLineIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { SimpleLineIcons, Ionicons, MaterialIcons, Fontisto } from '@expo/vector-icons';
 
 
 
@@ -43,7 +43,7 @@ export default function App() {
             }
           }}>
             <Tab.Screen name="Reservation" component={ReservationDetailsPage} options={{tabBarIcon: ()=>{return <SimpleLineIcons name="calendar" size={24} color="black" />}}}/>
-            <Tab.Screen name="Events" component={EventsPage} options={{tabBarIcon: ()=>{return <Ionicons name="calendar" size={24} color="black" />}}} />
+            <Tab.Screen name="Events" component={EventsPage} options={{tabBarIcon: ()=>{return <Fontisto name="cocktail" size={24} color="black" />}}} />
             <Tab.Screen name="Room Service" component={RoomServicePage} options={{tabBarIcon: ()=>{return <Ionicons name="restaurant" size={24} color="black" />}}} />
             <Tab.Screen name="Report a Problem" component={ProblemsPage} options={{tabBarIcon: ()=>{return <MaterialIcons name="report-problem" size={24} color="black" />}}} />
           </Tab.Navigator>

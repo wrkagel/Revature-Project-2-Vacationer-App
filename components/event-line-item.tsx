@@ -37,7 +37,10 @@ export default function EventLineItem(props: Activity){
                     contract();
                 }
             }} style={styles.pressable}>
-            <Text style={styles.inlineTextBold}>{props.title}</Text>
+                {props.status === "Cancelled" ? 
+                    <Text style={[styles.inlineTextBold, {color:"crimson"}]}>{props.title}</Text> 
+                    : 
+                    <Text style={styles.inlineTextBold}>{props.title}</Text>}
             <Text style={styles.inlineText}>{new Date(props.startTime).toLocaleString()}</Text>
         </Pressable>
             {expanded && 
@@ -55,8 +58,12 @@ export default function EventLineItem(props: Activity){
                         {props.location}
                     </Text>
                     <Text style={styles.expandedText}>
-                        <Text style={styles.expandedBold}>Event Status: </Text>
-                        {props.status}
+                        {props.status === "Cancelled" ? 
+                            <Text style={[styles.expandedBold,{color:"crimson"}]}>Event Status: {props.status}</Text>
+                            :
+                            <Text style={styles.expandedBold}>Event Status: {props.status}</Text>
+                        }
+                        
                     </Text>
                 </Animated.View>
             }
