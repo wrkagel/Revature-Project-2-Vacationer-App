@@ -10,6 +10,7 @@ import ReservationDetailsPage from "./components/reservation-details-page";
 import RoomServicePage from "./components/room-service-page";
 import ReservationContext from "./contexts/reservation-context";
 import Reservation from "./models/reservation";
+import { SimpleLineIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 
 
@@ -41,10 +42,10 @@ export default function App() {
               </View>)
             }
           }}>
-            <Tab.Screen name="Reservation" component={ReservationDetailsPage}/>
-            <Tab.Screen name="Events" component={EventsPage} />
-            <Tab.Screen name="Room Service" component={RoomServicePage} />
-            <Tab.Screen name="Report a Problem" component={ProblemsPage} />
+            <Tab.Screen name="Reservation" component={ReservationDetailsPage} options={{tabBarIcon: ()=>{return <SimpleLineIcons name="calendar" size={24} color="black" />}}}/>
+            <Tab.Screen name="Events" component={EventsPage} options={{tabBarIcon: ()=>{return <Ionicons name="calendar" size={24} color="black" />}}} />
+            <Tab.Screen name="Room Service" component={RoomServicePage} options={{tabBarIcon: ()=>{return <Ionicons name="restaurant" size={24} color="black" />}}} />
+            <Tab.Screen name="Report a Problem" component={ProblemsPage} options={{tabBarIcon: ()=>{return <MaterialIcons name="report-problem" size={24} color="black" />}}} />
           </Tab.Navigator>
         </NavigationContainer>
       )}
@@ -63,5 +64,7 @@ const styles = StyleSheet.create({
   },
   logoutButton:{
     marginRight:10,
+    flexDirection:"row",
+    alignItems:"center"
   },
 });
