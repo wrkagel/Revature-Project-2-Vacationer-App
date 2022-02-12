@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import ReservationContext from "../contexts/reservation-context";
 import ServiceRequest from "../models/service-request";
 import ServiceRequestRoutes from "../routes/service-request-routes";

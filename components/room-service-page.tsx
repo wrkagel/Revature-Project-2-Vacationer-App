@@ -6,7 +6,7 @@ import ServiceRequest from "../models/service-request";
 import ServiceRequestRoutes from "../routes/service-request-routes";
 import OrderSubmitForm from "./order-submit-form";
 import ServiceRequestsList from "./service-requests-list";
-import { Fontisto, Feather, AntDesign } from '@expo/vector-icons';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
 export default function RoomServicePage() {
   const [cart, setCart] = useState<{ item: MenuItem; amount: number }[]>([]);
