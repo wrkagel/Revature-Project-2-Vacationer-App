@@ -9,11 +9,11 @@ export default function ProblemsPage() {
 
     const [type, setType] = useState<string>("");
 
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<{uri:string, height:number, width:number} | null>(null);
 
     const [desc, setDesc] = useState<string>("");
 
-    const [submit, setSubmit] = useState<{}>()
+    const [submit, setSubmit] = useState<{}>();
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -23,27 +23,33 @@ export default function ProblemsPage() {
           aspect: [4, 3],
           quality: 1,
         });
-
         console.log(result);
-
         if (!result.cancelled) {
-          setImage(result.uri);
+            const {uri, height, width} = result;
+          setImage({uri, height, width});
         }
-      };
+    };
 
-      useEffect(()=> {
+    useEffect(()=> {
         if(!submit)return;
         (async () => {
-            const savedDesc = {category:type,desc}
+            const savedDesc = {category:type,desc, photoLink:""}
+            if(image) {
+                const urlResponse = await ProblemRoutes.postPhoto(image);
+                if(urlResponse) {
+                    const url = await urlResponse.text();
+                    savedDesc.photoLink = url;
+                }
+            }
             const response = await ProblemRoutes.postProblem(savedDesc);
             if(response){
                 alert(response.data)
             }else{
-                alert("error occured while contacting server")
+                alert("error occurred while contacting server")
             }
         })();
 
-        },[submit])
+    },[submit]);
 
     return (<View style={styles.container}>
         <View style={{flex:0.2, flexDirection:'row'}}>
@@ -74,7 +80,7 @@ export default function ProblemsPage() {
         <Pressable onPress={()=>setSubmit({...submit})} style={{flex:0.1}}>
             <Text style={styles.pickerItem}>Submit Problem</Text>
         </Pressable>
-        {image && <Image source={{ uri: image }} style={{width:200, height: 200 }} />}
+        {image && <Image source={{ uri: image.uri}} style={{width:200, height: 200}} />}
     </View>)
 }
 
