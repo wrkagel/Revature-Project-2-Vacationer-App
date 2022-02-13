@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, TextInput, Pressable, Button, Image } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable, Button, Image, Dimensions } from "react-native";
 import {Picker} from '@react-native-picker/picker'
 import { useEffect, useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
@@ -9,24 +9,36 @@ export default function ProblemsPage() {
 
     const [type, setType] = useState<string>("");
 
-    const [image, setImage] = useState<{uri:string, height:number, width:number} | null>(null);
+    const [image, setImage] = useState<{uri:string, height:number, width:number, shrunkHeight:number, shrunkWidth:number} | null>(null);
 
     const [desc, setDesc] = useState<string>("");
 
     const [submit, setSubmit] = useState<{}>();
 
+    const [expandedImage, setExpandedImage] = useState<boolean>(false);
+
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
-          aspect: [4, 3],
           quality: 1,
         });
         console.log(result);
         if (!result.cancelled) {
-            const {uri, height, width} = result;
-          setImage({uri, height, width});
+            let {height:shrunkHeight, width:shrunkWidth} = result;
+            const {width:screenWidth, height:screenHeight} = Dimensions.get('screen');
+            while(result.height > screenHeight || result.width > screenWidth) {
+                result.height *= 0.95;
+                result.width *= 0.95;
+            }
+            while(shrunkHeight > screenHeight * 0.25 || shrunkWidth > screenWidth * 0.25) {
+                shrunkHeight *= 0.95;
+                shrunkWidth *= 0.95;
+            }
+          setImage({uri:result.uri, height:result.height, width:result.width, shrunkHeight, shrunkWidth});
+        } else {
+            setImage(null);
         }
     };
 
@@ -52,14 +64,14 @@ export default function ProblemsPage() {
     },[submit]);
 
     return (<View style={styles.container}>
-        <View style={{flex:0.2, flexDirection:'row'}}>
+        <View style={{flex:0.1, flexDirection:'row'}}>
             <View style={{flex:1}}>
                 <Text style={styles.issueLabel}>
                     Choose Issue Type
                 </Text>
             </View>
-            <View style={{flex:1 ,backgroundColor:"#ffffff", justifyContent:"flex-start"}}>
-                <Picker style={{flex:1}}
+            <View style={{flex:1 ,backgroundColor:"#ffffff", justifyContent:"flex-start", overflow:"hidden"}}>
+                <Picker style={{flex:1, backgroundColor:"#ffffff"}}
                     selectedValue={type}
                     onValueChange={(itemValue) => setType(itemValue)}
                 >
@@ -70,24 +82,37 @@ export default function ProblemsPage() {
                 </Picker>
             </View>
         </View>
-        <View style={{flex:0.5}}>
+        <View style={{flex:0.6}}>
             <TextInput onChangeText={(value)=> setDesc(value)} style={styles.textInput} multiline 
             placeholder={"Write a description of the problem here and please include location/room number"}/>
         </View>
-        <View style={styles.addPhotoView}>
+        <View style={[styles.addPhotoView, {opacity: (expandedImage ? 0 : 1)}]}>
             <Button title="Add a Photo" onPress={pickImage} />
         </View>
+        {image && <Pressable style={
+            {
+                position: (expandedImage ? "absolute" : "relative")
+            }} onPress={() => {
+            setExpandedImage(!expandedImage);
+        }}>
+            <Image source={{ uri: image.uri}} 
+            style={
+                {width: (expandedImage ? image.width : image.shrunkWidth), 
+                height: (expandedImage ? image.height : image.shrunkHeight),
+                alignSelf:"center", margin:10}} />
+        </Pressable>}
         <Pressable onPress={()=>setSubmit({...submit})} style={styles.pressable}>
             <Text style={styles.pressableText}>Submit Problem</Text>
         </Pressable>
-        {image && <Image source={{ uri: image.uri}} style={{width:200, height: 200}} />}
     </View>)
 }
 
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor: '#dedede'
+        backgroundColor: '#dedede',
+        justifyContent: "center",
+        alignItems: "center"
     },
     pickerItem: {
         fontSize:20,
@@ -102,7 +127,8 @@ const styles = StyleSheet.create({
     pressable:{
         flex:0.1,
         backgroundColor:"#e0a020",
-        justifyContent:"center"
+        justifyContent:"center",
+        width:"100%"
     },
     issueLabel:{
         flex: 1, 
@@ -118,9 +144,9 @@ const styles = StyleSheet.create({
         padding:15,
     },
     addPhotoView:{
-        flex:0.2,
+        flex:0.1,
         justifyContent:"flex-start",
-        marginHorizontal: "20%",
+        margin:10
     }
 
 })
